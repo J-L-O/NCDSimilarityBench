@@ -5,6 +5,7 @@ import numpy as np
 from importlib_resources.abc import Traversable
 from torchvision.datasets import ImageNet
 
+
 class DiscoverTargetTransform:
     def __init__(self, mapping):
         self.mapping = mapping
@@ -13,23 +14,28 @@ class DiscoverTargetTransform:
         y = self.mapping[y]
         return y
 
+
 class ImageNetSplit(ImageNet):
     LABELED_SPLITS = ["l1", "l1.5", "l2"]
     UNLABELED_SPLITS = ["u1", "u2"]
 
     def __init__(
-            self,
-            root: str,
-            split: str = "train",
-            labeled_split: str = "L1",
-            unlabeled_split: str = "U1",
-            **kwargs
+        self,
+        root: str,
+        split: str = "train",
+        labeled_split: str = "L1",
+        unlabeled_split: str = "U1",
+        **kwargs,
     ):
         labeled_lower = labeled_split.lower()
         unlabeled_lower = unlabeled_split.lower()
 
-        assert labeled_lower in self.LABELED_SPLITS, f"Labeled split {labeled_split} is not supported!"
-        assert unlabeled_lower in self.UNLABELED_SPLITS, f"Unlabeled split {unlabeled_split} is not supported!"
+        assert (
+            labeled_lower in self.LABELED_SPLITS
+        ), f"Labeled split {labeled_split} is not supported!"
+        assert (
+            unlabeled_lower in self.UNLABELED_SPLITS
+        ), f"Unlabeled split {unlabeled_split} is not supported!"
 
         self.labeled_split = labeled_lower
         self.unlabeled_split = unlabeled_lower
@@ -49,7 +55,9 @@ class ImageNetSplit(ImageNet):
         unlabeled_classes = list(np.loadtxt(unlabeled_path, dtype=str))
 
         labeled_class_idxs = np.array([class_to_idx[name] for name in labeled_classes])
-        unlabeled_class_idxs = np.array([class_to_idx[name] for name in unlabeled_classes])
+        unlabeled_class_idxs = np.array(
+            [class_to_idx[name] for name in unlabeled_classes]
+        )
 
         # target transform
         all_class_idxs = np.concatenate((labeled_class_idxs, unlabeled_class_idxs))
