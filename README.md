@@ -24,6 +24,7 @@ This enables researchers to evaluate their methods under varying degrees of sema
 similarity.
 This standalone package allows to easily use the benchmark for your own
 experiments.
+In addition, this package includes an extension of the benchmark to the GCD setting [3].
 
 ## Installation
 
