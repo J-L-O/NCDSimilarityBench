@@ -23,22 +23,22 @@ class ImageNetSplit(ImageNet):
         self,
         root: str,
         split: str = "train",
-        labeled_split: str = "L1",
-        unlabeled_split: str = "U1",
+        labeled_set: str = "L1",
+        unlabeled_set: str = "U1",
         **kwargs,
     ):
-        labeled_lower = labeled_split.lower()
-        unlabeled_lower = unlabeled_split.lower()
+        labeled_lower = labeled_set.lower()
+        unlabeled_lower = unlabeled_set.lower()
 
         assert (
             labeled_lower in self.LABELED_SPLITS
-        ), f"Labeled split {labeled_split} is not supported!"
+        ), f"Labeled split {labeled_set} is not supported!"
         assert (
             unlabeled_lower in self.UNLABELED_SPLITS
-        ), f"Unlabeled split {unlabeled_split} is not supported!"
+        ), f"Unlabeled split {unlabeled_set} is not supported!"
 
-        self.labeled_split = labeled_lower
-        self.unlabeled_split = unlabeled_lower
+        self.labeled_set = labeled_lower
+        self.unlabeled_set = unlabeled_lower
         super(ImageNetSplit, self).__init__(root, split, **kwargs)
 
     @staticmethod
@@ -48,8 +48,8 @@ class ImageNetSplit(ImageNet):
         return files("similaritybench.splits").joinpath(file_name)
 
     def _initialize_entity30(self, class_to_idx):
-        labeled_path = self._get_class_list_path(True, self.labeled_split)
-        unlabeled_path = self._get_class_list_path(False, self.unlabeled_split)
+        labeled_path = self._get_class_list_path(True, self.labeled_set)
+        unlabeled_path = self._get_class_list_path(False, self.unlabeled_set)
 
         labeled_classes = list(np.loadtxt(labeled_path, dtype=str))
         unlabeled_classes = list(np.loadtxt(unlabeled_path, dtype=str))
